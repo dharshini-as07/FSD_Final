@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Real-Time Financial Fraud Detection and Alert System
 ### A MERN Stack-Based Approach for Detecting Suspicious Financial Transactions
 
@@ -345,3 +346,6 @@ When logged in as **Customer**, click **"Send Money"** in the sidebar. You will 
 
 ## 📜 Academic Declaration
 This project is developed as an academic full-stack project demonstrating deterministic security engineering, transaction auditing, and real-time event broadcasting using the MERN stack.
+=======
+# FSD_Final
+>>>>>>> origin/main
