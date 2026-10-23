@@ -8,6 +8,24 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fraud_detection');
     console.log(`[MongoDB] Connected successfully: ${conn.connection.host}/${conn.connection.name}`);
 
+    // Ensure default admin user exists
+    try {
+      const User = require('../models/User');
+      const adminExists = await User.findOne({ email: 'admin@frauddetection.com' });
+      if (!adminExists) {
+        await User.create({
+          name: 'System Compliance Admin',
+          email: 'admin@frauddetection.com',
+          phone: '+91 98765 43210',
+          password: 'Admin@12345',
+          role: 'admin'
+        });
+        console.log('[MongoDB] Default admin user initialized (admin@frauddetection.com).');
+      }
+    } catch (userErr) {
+      console.warn('[MongoDB] User check skipped:', userErr.message);
+    }
+
     // Synchronize historical transactions so test payees reflect today's current date and realistic times
     try {
       const Transaction = require('../models/Transaction');

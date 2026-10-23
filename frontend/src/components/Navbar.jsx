@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getSocket } from '../services/socket';
-import { LogOut, ShieldCheck, QrCode } from 'lucide-react';
+import { LogOut, ShieldCheck, QrCode, ShieldAlert, Smartphone } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar = ({ title = 'Dashboard' }) => {
-  const { user, logout, isAdmin } = useAuth();
+  const { user, login, logout, isAdmin } = useAuth();
   const [socketConnected, setSocketConnected] = useState(false);
   const navigate = useNavigate();
 
@@ -61,6 +61,64 @@ const Navbar = ({ title = 'Dashboard' }) => {
             <span>{socketConnected ? 'FraudShield Live' : 'Connecting...'}</span>
           </span>
         </div>
+
+        {/* Role Switcher Button */}
+        {!isAdmin ? (
+          <button
+            onClick={async () => {
+              try {
+                await login('admin@frauddetection.com', 'Admin@12345');
+                navigate('/admin');
+              } catch (e) {
+                navigate('/login');
+              }
+            }}
+            className="btn btn-primary btn-sm"
+            style={{
+              padding: '6px 14px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: '#1a73e8',
+              borderRadius: '9999px',
+              cursor: 'pointer'
+            }}
+            title="Open Compliance Admin Portal"
+          >
+            <ShieldAlert size={14} />
+            <span>Admin Portal</span>
+          </button>
+        ) : (
+          <button
+            onClick={async () => {
+              try {
+                await login('customer@example.com', 'Customer@12345');
+                navigate('/dashboard');
+              } catch (e) {
+                navigate('/dashboard');
+              }
+            }}
+            className="btn btn-outline btn-sm"
+            style={{
+              padding: '6px 14px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              borderRadius: '9999px',
+              borderColor: '#1a73e8',
+              color: '#1a73e8',
+              cursor: 'pointer'
+            }}
+            title="Switch to Customer GPay Interface"
+          >
+            <Smartphone size={14} />
+            <span>Customer GPay</span>
+          </button>
+        )}
 
         {/* User Role Tag */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', color: '#3c4043' }}>
